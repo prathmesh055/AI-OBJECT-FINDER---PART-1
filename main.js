@@ -33,14 +33,27 @@ function draw()
         for (i =0; i< objects.lenght; i++)
         {
             document.getElementById("status").innerHTML = "Status : Objects Deteched";
-            document.getElementById("number_of_objects").innerHTML = "Number of objects detected are :"+ objects.lenght;
+            document.getElementById("number_of_objects").innerHTML = "Number of objects detected are :"+ objects.length;
 
-            FileList("FF0000");
+            fill("FF0000");
             percent = floor(objects[i].confidence * 100);
-            Text(objects[i].label +""+percent + "%",objects[i].x +15, objects[i].y +15);
-            nofill();
+            text(objects[i].label +""+percent + "%",objects[i].x +15, objects[i].y +15);
+            noFill();
             stroke("#ff0000");
-            Reflect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
+            rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
+            if(objects[i].label==object_name)
+            {
+                video.stop;
+                objectDetector.detect(gotResult);
+                document.getElementById("object_status").innerHTML = object_name+"found";
+                synth = window.speechSynthesis; 
+                utterThis = new SpeechSynthesisUtterance(object_name + "Found");
+                synth.speak(utterThis);
+            }
+            else
+            {
+                document.getElementById("object_status").innerHTML = object_name+"not found";
+            }
 
         }
     }
